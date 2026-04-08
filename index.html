@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Трекер привычек</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+
+</head>
+<body>
+  <!-- AUTH -->
+  <div class="auth-shell" id="authCard">
+    <div class="auth-box">
+      <h1>Вход</h1>
+      <p class="muted-text">Войди в приложение, чтобы работать со своими данными</p>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Введите email" />
+
+      <label for="password">Пароль</label>
+      <input type="password" id="password" placeholder="Введите пароль" />
+
+      <button id="signUpButton" type="button" class="primary-btn">Зарегистрироваться</button>
+      <button id="signInButton" type="button" class="primary-btn">Войти</button>
+
+      <p id="authMessage" class="status-text"></p>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div class="app hidden" id="appCard">
+    <main class="app-screen">
+      <!-- HOME -->
+      <section id="homeSection" class="screen-section">
+     
+
+        <div class="panel">
+          <div class="field-title">Период</div>
+          <input type="date" id="homeDate" />
+
+          <div class="period-tabs">
+            <button class="period-tab active" data-range="day" type="button">Дни</button>
+            <button class="period-tab" data-range="week" type="button">Недели</button>
+            <button class="period-tab" data-range="month" type="button">Месяца</button>
+            <button class="period-tab" data-range="year" type="button">Года</button>
+          </div>
+
+          <div class="chart-title-row">
+            <div class="field-title">Вес</div>
+            <div class="big-metric" id="avgWeightValue">—</div>
+          </div>
+
+          <div class="chart-box">
+            <div class="chart-y-axis">
+              <span id="chartMaxLabel">55</span>
+              <span id="chartMinLabel">48</span>
+            </div>
+            <div id="weightChart" class="weight-chart"></div>
+          </div>
+
+          <div id="weeklyTiles" class="weekly-tiles"></div>
+
+          <div class="goals-short-card">
+            <div class="field-title">Цели</div>
+            <div class="sub-label">Выполнено</div>
+            <div class="progress-track">
+              <div id="homeGoalsProgressBar" class="progress-fill">0%</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DAILY LIST -->
+      <section id="dailySection" class="screen-section hidden">
+        <h2 class="section-title">Дневник</h2>
+        <div id="dailyCards" class="cards-list horizontal"></div>
+      </section>
+
+      <!-- DAILY EDITOR -->
+      <section id="dailyEditorSection" class="screen-section hidden">
+        <div class="editor-header">
+          <h2 class="section-title">Создание записи дневника</h2>
+        </div>
+
+        <div class="panel editor-panel">
+          <label for="entryDate">Дата</label>
+          <input type="date" id="entryDate" />
+
+          <div class="slider-header">
+            <div class="field-title">Легкость пробуждения</div>
+            <div class="slider-scale">
+              <span>0</span>
+              <span>10</span>
+            </div>
+          </div>
+          <input type="range" id="wakeUp" min="0" max="10" step="1" />
+          <div class="range-value" id="wakeUpValue">5</div>
+
+          <label for="weight">Вес</label>
+          <input type="number" id="weight" step="0.1" placeholder="Введите вес" />
+
+          <label for="mood">Настроение</label>
+          <select id="mood">
+            <option value="">Выберите настроение</option>
+            <option value="обычное">Обычное</option>
+            <option value="веселое">Веселое</option>
+            <option value="энергичное">Энергичное</option>
+            <option value="спокойствие">Спокойствие</option>
+            <option value="апатия">Апатия</option>
+            <option value="грусть">Грусть</option>
+            <option value="лень">Лень</option>
+            <option value="раздражение">Раздражение</option>
+          </select>
+
+          <div class="field-title group-title">Питание</div>
+          <div class="choice-grid four">
+            <button type="button" class="choice-card bool-card" data-field="threeMeals">3 приема</button>
+            <button type="button" class="choice-card bool-card" data-field="proteinNorm">Норма белка</button>
+            <button type="button" class="choice-card bool-card" data-field="waterNorm">Вода</button>
+            <button type="button" class="choice-card bool-card" data-field="supplements">БАДы</button>
+            <button type="button" class="choice-card bool-card small" data-field="noFood3hBeforeSleep">Еда перед сном</button>
+          </div>
+
+          <div class="field-title group-title">Кожа и волосы</div>
+          <div class="choice-grid three">
+            <button type="button" class="choice-card bool-card small" data-field="faceMassage">Массаж лица</button>
+            <button type="button" class="choice-card bool-card" data-field="tapes">Тейпы</button>
+            <button type="button" class="choice-card bool-card small" data-field="scalpSerum">Сыворотка на корни</button>
+          </div>
+
+          <div class="field-title group-title">Тело</div>
+          <div class="choice-grid four">
+            <button type="button" class="choice-card bool-card" data-field="coldShower">Холодный душ</button>
+            <button type="button" class="choice-card bool-card" data-field="massage">Массаж</button>
+            <button type="button" class="choice-card bool-card" data-field="meditation">Медитация</button>
+            <button type="button" class="choice-card bool-card" data-field="exercise">Зарядка</button>
+          </div>
+
+          <div class="field-title group-title">Тренировка</div>
+          <div class="choice-grid four">
+            <button type="button" class="choice-card multi-card" data-group="workoutKind" data-value="бег">Бег</button>
+            <button type="button" class="choice-card multi-card" data-group="workoutKind" data-value="силовая">Силовая</button>
+            <button type="button" class="choice-card multi-card" data-group="workoutKind" data-value="плавание">Плавание</button>
+            <button type="button" class="choice-card multi-card" data-group="workoutKind" data-value="йога">Йога</button>
+            <button type="button" class="choice-card multi-card" data-group="workoutKind" data-value="кардио">Кардио</button>
+            <button type="button" class="choice-card multi-card" data-group="workoutKind" data-value="ходьба">Ходьба</button>
+            <button type="button" class="choice-card multi-card" data-group="workoutKind" data-value="растяжка">Растяжка</button>
+            <button type="button" class="choice-card multi-card" data-group="workoutKind" data-value="другое">Другое</button>
+          </div>
+
+          <div class="field-title group-title">Тип тренировки</div>
+          <div class="pill-row">
+            <button type="button" class="pill-card multi-card" data-group="workoutType" data-value="самостоятельно">Самостоятельно</button>
+            <button type="button" class="pill-card multi-card" data-group="workoutType" data-value="с тренером платно">С тренером платно</button>
+            <button type="button" class="pill-card multi-card" data-group="workoutType" data-value="с тренером бесплатно">С тренером бесплатно</button>
+          </div>
+
+          <div class="field-title group-title">Отношения</div>
+          <div class="choice-grid four">
+            <button type="button" class="choice-card bool-card" data-field="timeWithMax">Максим</button>
+            <button type="button" class="choice-card bool-card" data-field="timeWithFriends">Подруги</button>
+            <button type="button" class="choice-card bool-card" data-field="callWithFamily">Родные</button>
+            <button type="button" class="choice-card bool-card" data-field="travel">Путешествие</button>
+          </div>
+
+          <div class="field-title group-title">Прочее</div>
+          <div class="choice-grid four">
+            <button type="button" class="choice-card bool-card" data-field="reading">Чтение</button>
+            <button type="button" class="choice-card bool-card" data-field="study">Обучение</button>
+            <button type="button" class="choice-card bool-card" data-field="melatonin">Мелатонин</button>
+            <button type="button" class="choice-card bool-card" data-field="noInstagram">Без инстаграма</button>
+          </div>
+
+          <label for="daySummary">Как прошел день?</label>
+          <textarea id="daySummary" placeholder="Кратко опиши день"></textarea>
+
+          <label for="gratitude">Благодарности</label>
+          <textarea id="gratitude" placeholder="За что ты благодарна сегодня?"></textarea>
+
+          <label for="dayPhotoFile">Фото дня</label>
+          <input type="file" id="dayPhotoFile" accept="image/*" />
+          <div id="dayPhotoPreview" class="inline-photo-preview hidden"></div>
+
+
+          <p id="dailyMessage" class="status-text"></p>
+
+          <div class="editor-footer">
+            <button type="button" id="dailyBackButton" class="secondary-btn">Назад</button>
+            <button type="button" id="saveDailyButton" class="primary-btn">Сохранить</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- MEASUREMENTS LIST -->
+      <section id="measurementsSection" class="screen-section hidden">
+        <h2 class="section-title">Замеры</h2>
+
+        <div class="panel">
+          <div class="compare-selects">
+            <div>
+              <label for="compareBeforeDate">До</label>
+              <select id="compareBeforeDate"></select>
+            </div>
+            <div>
+              <label for="compareAfterDate">После</label>
+              <select id="compareAfterDate"></select>
+            </div>
+          </div>
+
+          <div class="compare-table-wrap">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th id="beforeDateLabel">До</th>
+                  <th id="afterDateLabel">После</th>
+                </tr>
+              </thead>
+              <tbody id="compareTableBody"></tbody>
+            </table>
+          </div>
+
+          <div class="photo-type-tabs">
+            <button type="button" class="photo-tab active" data-photo-type="front">Анфас</button>
+            <button type="button" class="photo-tab" data-photo-type="back">Спина</button>
+            <button type="button" class="photo-tab" data-photo-type="left">Лево</button>
+            <button type="button" class="photo-tab" data-photo-type="right">Право</button>
+            <button type="button" class="photo-tab" data-photo-type="arms_back">Мышцы спины</button>
+            <button type="button" class="photo-tab" data-photo-type="arms_front">Руки</button>
+          </div>
+
+          <div class="photo-compare-grid">
+            <div class="photo-box" id="beforePhotoBox">Фото<br>до</div>
+            <div class="photo-box" id="afterPhotoBox">Фото<br>После</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MEASUREMENTS EDITOR -->
+      <section id="measurementsEditorSection" class="screen-section hidden">
+        <h2 class="section-title">Создание записи о замерах</h2>
+
+        <div class="panel editor-panel">
+          <label for="measurementDate">Дата замера</label>
+          <input type="date" id="measurementDate" />
+
+          <label for="chest">Грудь</label>
+          <input type="number" id="chest" step="0.1" placeholder="Сантиметры" />
+
+          <label for="underbust">Под грудью</label>
+          <input type="number" id="underbust" step="0.1" placeholder="Сантиметры" />
+
+          <label for="arm">Рука</label>
+          <input type="number" id="arm" step="0.1" placeholder="Сантиметры" />
+
+          <label for="waist">Талия</label>
+          <input type="number" id="waist" step="0.1" placeholder="Сантиметры" />
+
+          <label for="hips">Попа</label>
+          <input type="number" id="hips" step="0.1" placeholder="Сантиметры" />
+
+          <label for="thigh">Бедро</label>
+          <input type="number" id="thigh" step="0.1" placeholder="Сантиметры" />
+
+          <label for="frontPhotoFile">Фото анфас</label>
+          <input type="file" id="frontPhotoFile" accept="image/*" />
+          <div id="frontPhotoPreview" class="inline-photo-preview hidden"></div>
+
+          <label for="leftPhotoFile">Фото слева</label>
+          <input type="file" id="leftPhotoFile" accept="image/*" />
+          <div id="leftPhotoPreview" class="inline-photo-preview hidden"></div>
+
+          <label for="rightPhotoFile">Фото справа</label>
+          <input type="file" id="rightPhotoFile" accept="image/*" />
+          <div id="rightPhotoPreview" class="inline-photo-preview hidden"></div>
+
+          <label for="backPhotoFile">Фото со спины</label>
+          <input type="file" id="backPhotoFile" accept="image/*" />
+          <div id="backPhotoPreview" class="inline-photo-preview hidden"></div>
+
+          <label for="armsBackPhotoFile">Фото мышц спины</label>
+          <input type="file" id="armsBackPhotoFile" accept="image/*" />
+          <div id="armsBackPhotoPreview" class="inline-photo-preview hidden"></div>
+
+          <label for="armsFrontPhotoFile">Фото рук</label>
+          <input type="file" id="armsFrontPhotoFile" accept="image/*" />
+          <div id="armsFrontPhotoPreview" class="inline-photo-preview hidden"></div>
+
+          <p id="measurementsMessage" class="status-text"></p>
+
+          <div class="editor-footer">
+            <button type="button" id="measurementsBackButton" class="secondary-btn">Назад</button>
+            <button type="button" id="saveMeasurementsButton" class="primary-btn">Сохранить</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- GOALS -->
+      <section id="goalsSection" class="screen-section hidden">
+        <h2 class="section-title">Цели</h2>
+
+        <div class="panel">
+          <div class="year-tabs">
+            <button type="button" id="year2025Button" class="year-tab">2025</button>
+            <button type="button" id="year2026Button" class="year-tab active">2026</button>
+          </div>
+
+          <div class="field-title">Выполнено</div>
+          <div class="progress-track">
+            <div id="goalsProgressBar" class="progress-fill">0%</div>
+          </div>
+
+          <div id="goalsChart" class="goals-chart"></div>
+
+          <div id="goalsLists" class="goal-groups"></div>
+        </div>
+      </section>
+
+      <!-- GOAL EDITOR -->
+      <section id="goalEditorSection" class="screen-section hidden">
+        <h2 class="section-title">Цель</h2>
+
+        <div class="panel editor-panel">
+          <input type="hidden" id="goalId" />
+
+          <label for="goalTitle">Цель</label>
+          <textarea id="goalTitle"></textarea>
+
+          <label for="goalCategory">Категория</label>
+          <input type="text" id="goalCategory" placeholder="Например: Здоровье" />
+
+          <label for="goalYear">Год</label>
+          <input type="number" id="goalYear" placeholder="2026" />
+
+          <div class="goal-delete-wrap">
+            <button type="button" id="deleteGoalButton" class="danger-link">Удалить</button>
+          </div>
+
+          <p id="goalMessage" class="status-text"></p>
+
+          <div class="editor-footer">
+            <button type="button" id="goalBackButton" class="secondary-btn">Назад</button>
+            <button type="button" id="saveGoalButton" class="primary-btn">Сохранить</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FAB -->
+    <button type="button" id="fabButton" class="fab-button">
+      <i data-lucide="plus"></i>
+    </button>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <button type="button" id="navHome" class="nav-btn active">
+        <i data-lucide="bar-chart-3"></i>
+      </button>
+
+      <button type="button" id="navDaily" class="nav-btn">
+        <i data-lucide="clipboard-list"></i>
+      </button>
+
+      <div class="nav-gap"></div>
+
+      <button type="button" id="navMeasurements" class="nav-btn">
+        <i data-lucide="ruler"></i>
+      </button>
+
+      <button type="button" id="navGoals" class="nav-btn">
+        <i data-lucide="check-square"></i>
+      </button>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
+</body>
+</html>
