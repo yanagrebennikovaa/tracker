@@ -907,3 +907,24 @@ input[type="range"]::-moz-range-thumb {
   font-size: 12px;
   padding: 10px 6px;
 }
+/* FIX: editor buttons above bottom nav */
+#dailyEditorSection,
+#measurementsEditorSection,
+#goalEditorSection {
+  padding-bottom: 140px;
+}
+
+.editor-panel {
+  padding-bottom: 24px;
+}
+
+.editor-footer {
+  position: sticky;
+  bottom: calc(92px + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding-top: 12px;
+  padding-bottom: 6px;
+  z-index: 20;
+}
